@@ -89,7 +89,20 @@ namespace ParserSketchUP
                         if (line.IndexOf("fiberboard") != -1)
                             details.Add(new Panel(temp_Name, a[0], Convert.ToInt16(a[1]), "", Convert.ToInt16(a[2]), "", $"({a[1]}x{a[2]})"));
                         else
-                            details.Add(new Panel(temp_Name, a[0], Convert.ToInt16(a[1]), a[2], Convert.ToInt16(a[3]), a[4], a[5]));
+                        {
+                            // лишнее переопределение линейных размеров панели без кромки...
+                            // так оставленно на случай отката к размерам нетто
+                            int length = Convert.ToInt16(a[1]), width = Convert.ToInt16(a[3]);
+                            if (a[5].IndexOf('x') != -1)
+                            {
+                                a[5] = a[5].Trim('(', ')');
+                                length = Convert.ToInt16(a[5].Split('x')[0]);
+                                width = Convert.ToInt16(a[5].Split('x')[1]);
+                            }
+
+                            
+                            details.Add(new Panel(temp_Name, a[0], length, a[2], width, a[4], a[5]));
+                        }
                     }
                     
                 }
